@@ -4,10 +4,10 @@ provider "aws" {
   region     = "${var.aws_region}"
 }
 
-resource "aws_instance" "example_public" {
+resource "aws_instance" "ckan_server" {
   ami                    = "${data.aws_ami.ubuntu.id}"
   instance_type          = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.example.id}"]
+  vpc_security_group_ids = ["${aws_security_group.ckan_sg.id}"]
   associate_public_ip_address = true
   key_name               =  "ragha"
   associate_public_ip_address = true
@@ -17,7 +17,7 @@ resource "aws_instance" "example_public" {
   }
 }
 
-resource "aws_security_group" "example" {
+resource "aws_security_group" "ckan_sg" {
   name = "${var.instance_name}"
 
   egress {
@@ -50,14 +50,14 @@ resource "aws_security_group" "example" {
   }
 }
 
-resource "null_resource" "example_provisioner" {
+resource "null_resource" "ckan_provisioner" {
   triggers {
-    public_ip = "${aws_instance.example_public.public_ip}"
+    public_ip = "${aws_instance.ckan_server.public_ip}"
   }
 
   connection {
     type = "ssh"
-    host = "${aws_instance.example_public.public_ip}"
+    host = "${aws_instance.ckan_server.public_ip}"
     user = "${var.ssh_user}"
     port = "${var.ssh_port}"
     agent = false
