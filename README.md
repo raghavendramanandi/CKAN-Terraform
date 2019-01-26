@@ -21,3 +21,10 @@ Here some perspectives/vision and intentions from authors point:
 - Automate admin user creation
 
 Thanks to all the resource providers online
+
+#CKAN service has to be started manually
+#commands:
+
+. /usr/lib/ckan/default/bin/activate
+cd /usr/lib/ckan/default/src/ckan
+paster serve /etc/ckan/default/development.ini
